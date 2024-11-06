@@ -45,6 +45,51 @@ The proposal of this SLEP is implemented in [6]_.
 
 This change has no backward compatibility concerns.
 
+
+Implementation
+--------------
+
+It is implemented in [6]_ as::
+
+   class BaseEstimator(...):
+      ...
+      def freeze(self):
+         """Return a :term:`frozen` version of this estimator.
+
+         This method wraps the estimator in a :class:`~sklearn.frozen.FrozenEstimator`
+         object, and returns the frozen object. This method does NOT freeze this object
+         itself.
+
+         The return frozen object will prevent changes to this estimator's instance
+         parameters; however, direct changes to this estimator are still possible.
+         Returns
+         -------
+         frozen : :class:`~sklearn.frozen.Frozen`
+               A frozen version of this estimator.
+         """
+         from sklearn.frozen import FrozenEstimator
+         return FrozenEstimator(self)
+
+
+Alternatives
+------------
+
+1. We could not add the method. The user would always have to manually import
+``FrozenEstimator`` from ``sklearn.frozen``, and wrap their estimator with it.
+
+2. We could provide a method under `skelarn` or `sklearn.base`. Which would mean the
+user would have to import from ``sklearn`` or ``sklearn.base`` to use the method::
+
+    from sklearn.calibration import CalibratedClassifierCV
+    from sklearn.ensemble import RandomForestClassifier
+    from sklearn import freeze
+
+    clf = RandomForestClassifier(n_estimators=25)
+    clf.fit(X_train, y_train)
+    cal_clf = CalibratedClassifierCV(freeze(clf), method="sigmoid")
+    cal_clf.fit(X_valid, y_valid)
+
+
 Copyright
 ---------
 
