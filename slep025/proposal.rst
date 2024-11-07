@@ -77,7 +77,7 @@ Alternatives
 1. We could not add the method. The user would always have to manually import
 ``FrozenEstimator`` from ``sklearn.frozen``, and wrap their estimator with it.
 
-2. We could provide a method under `skelarn` or `sklearn.base`. Which would mean the
+2. We could provide a method under `sklearn` or `sklearn.base`. Which would mean the
 user would have to import from ``sklearn`` or ``sklearn.base`` to use the method::
 
     from sklearn.calibration import CalibratedClassifierCV
